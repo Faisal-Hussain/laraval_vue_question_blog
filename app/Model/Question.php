@@ -13,7 +13,7 @@ protected $guarded=[];
         return $this->belongsTo(User::class);
     }
     public function replies(){
-        return $this->hasMany(Reply::class,'question_id','id')->latest();
+        return $this->hasMany(Reply::class,'question_id','id')->latest()->with('like');
     }
     public function category(){
         return $this->belongsTo(Category::class);

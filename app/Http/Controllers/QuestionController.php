@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReplyResource;
+use App\Model\Like;
 use App\Model\Question;
 use App\User;
 use Illuminate\Http\Request;
@@ -59,7 +61,9 @@ class QuestionController extends Controller
      */
     public function show($question)
     {
+
         return Question::with('replies')->find($question);
+//        return ReplyResource::collection(Question::with('replies')->find($question));
     }
 
     /**

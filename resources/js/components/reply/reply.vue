@@ -4,6 +4,9 @@
             <v-card-title>
                 <v-card-subtitle><strong>Statement</strong></v-card-subtitle>
                 <v-divider></v-divider>
+                <v-spacer></v-spacer>
+                <like :data=data></like:>
+
             </v-card-title>
             <edit-reply v-if="editing" :reply="data"></edit-reply>
             <v-card-text v-else v-html="data.body" ></v-card-text>
@@ -23,9 +26,11 @@
 
 <script>
 import editReply from "./editReply";
+import like from "../like";
+
 export default {
     props:['data','index'],
-    components:{editReply},
+    components:{editReply,like},
 name: "reply",
     data(){
         return{

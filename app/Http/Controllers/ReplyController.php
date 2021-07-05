@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeleteReplyEvent;
+use App\Http\Resources\ReplyResource;
+use App\Model\Like;
 use App\Model\Question;
 use App\Model\Reply;
 use Illuminate\Http\Request;
@@ -21,8 +24,7 @@ class ReplyController extends Controller
     public function index(Question $question)
     {
 
-
-        return $question->replies;
+        return ReplyResource::collection($question->replies());
     }
 
     /**
@@ -45,7 +47,7 @@ class ReplyController extends Controller
     {
         $request['user_id']=2;
         $reply=$question->replies()->create($request->all());
-        return response($reply);
+        return response(new ReplyResource($reply));
     }
 
     /**
@@ -56,7 +58,7 @@ class ReplyController extends Controller
      */
     public function show(Question $question,Reply $reply)
     {
-        return $reply;
+        return new ReplyResource($reply);
     }
 
     /**
@@ -92,6 +94,7 @@ class ReplyController extends Controller
     public function destroy(Question $question,Reply $reply)
     {
         $reply->delete();
+        broadcast(new DeleteReplyEvent($reply->id))->toOthers();
         return response($reply);
     }
 }
